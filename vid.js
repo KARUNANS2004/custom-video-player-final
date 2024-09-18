@@ -91,7 +91,7 @@ function handleTimelineUpdate(e){
     const rect=timelineContainer.getBoundingClientRect();
     const percent=Math.min(Math.max(0,e.x-rect.x),rect.width)/rect.width;
     const previewImageNumber=Math.max(1,Math.floor((percent*video.duration)/1));
-    const previewImgSrc=`${previewImageNumber}.png`;
+    const previewImgSrc=`./thumbnails/${previewImageNumber}.png`;
     previewImg.src=previewImgSrc;
     timelineContainer.style.setProperty('--preview-position',percent);
 
