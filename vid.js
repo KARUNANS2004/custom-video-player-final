@@ -193,9 +193,15 @@ document.addEventListener('keydown',(e)=>{
         case "f":
             videoContainer.classList.toggle('full-screen');
             videoContainer.classList.remove('theatre');
+            Icons.forEach((icon)=>{
+                icon.classList.toggle('hide-icon');
+            })
             break;
         case "t":
             videoContainer.classList.toggle('theatre');
+            Icons.forEach((icon)=>{
+                icon.classList.toggle('hide-icon');
+            })
             videoContainer.classList.remove('full-screen');
             break;
         case "i":
