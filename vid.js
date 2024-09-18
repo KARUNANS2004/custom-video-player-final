@@ -14,7 +14,7 @@ const speedButton=document.getElementById('speed-btn');
 const previewImg=document.querySelector('.preview-img');
 const thumbnailImage=document.querySelector('.thumbnail-image');
 const timelineContainer=document.querySelector('.timeline');
-const Icons=document.querySelectorAll('.icon')
+const Icons=document.querySelectorAll('.icon');
 
 document.addEventListener('mouseup',(e)=>{
     if (isScrubbing){
