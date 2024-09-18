@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Video Player</title>
+    <link rel="stylesheet" href="src/vid.css">
+    <link rel="stylesheet" href="src/output.css">
+
+</head>
+<body class="w-screen h-screen flex items-center bg-gradient-to-r from-green-500 to-cyan-500">
+  <div id="player" class="w-[90%] max-w-[1000px] flex justify-centers mx-10 relative paused bg-black" data-volume-level="high">
+    <img class="thumbnail-image absolute top-0 left-0 bottom-0 right-0 h-full w-full">
+      <div class="video-controls absolute bottom-0 left-0 right-0 z-[100] opacity-0">
+          <div class="timeline-container h-2 ms-2 me-2 cursor-pointer flex items-center relative">
+            <div class="timeline bg-[#808080] h-1 w-full relative transition-all 150ms ease-linear">
+              <img class="preview-img">
+              <div class="thumb-indicator"></div>
+            </div>
+          </div>
+          <div class="controls flex gap-10 h-[50px] items-center justify-between text-white">
+              <div class="left-side flex items-center gap-5 ">
+                <button id="play-pause-button" class="flex relative opacity-85 transition-all duration-150 ease-linear hover:opacity-100">
+                <svg class="pause-icon  bottom-0 " xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" style="fill: rgba(246, 242, 242, 1);transform: msFilter"><path d="M7 6v12l10-6z"></path></svg>
+                <svg class="play-icon bottom-0" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" style="fill: rgba(246, 242, 242, 1);transform: msFilter"><path d="M8 7h3v10H8zm5 0h3v10h-3z"></path></svg>
+                </button>
+                <div id="volume-container" class="flex items-center">
+                  <button id="volume-btn" class="h-[50px] w-[50px] flex items-center opacity-85 transition-all duration-150 ease-linear hover:opacity-100 ">
+                    <svg class="volume-high hidden" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: rgba(253, 248, 248, 1);">
+                    <path d="M16 21c3.527-1.547 5.999-4.909 5.999-9S19.527 4.547 16 3v2c2.387 1.386 3.999 4.047 3.999 7S18.387 17.614 16 19v2z"></path>
+                    <path d="M16 7v10c1.225-1.1 2-3.229 2-5s-.775-3.9-2-5zM4 17h2.697l5.748 3.832a1.004 1.004 0 0 0 1.027.05A1 1 0 0 0 14 20V4a1 1 0 0 0-1.554-.832L6.697 7H4c-1.103 0-2 .897-2 2v6c0 1.103.897 2 2 2zm0-8h3c.033 0 .061-.016.093-.019a1.027 1.027 0 0 0 .38-.116c.026-.015.057-.017.082-.033L12 5.868v12.264l-4.445-2.964c-.025-.017-.056-.02-.082-.033a.986.986 0 0 0-.382-.116C7.059 15.016 7.032 15 7 15H4V9z"></path>
+                    </svg>
+                    <svg class="volume-low hidden " xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: rgba(253, 248, 248, 1);">
+                    <path d="M4 17h2.697l5.748 3.832a1.004 1.004 0 0 0 1.027.05A1 1 0 0 0 14 20V4a1 1 0 0 0-1.554-.832L6.697 7H4c-1.103 0-2 .897-2 2v6c0 1.103.897 2 2 2zm0-8h3c.033 0 .061-.016.093-.019a1.027 1.027 0 0 0 .379-.116c.026-.014.057-.017.082-.033L12 5.868v12.264l-4.445-2.964c-.025-.018-.056-.02-.082-.033a.977.977 0 0 0-.382-.116C7.059 15.016 7.032 15 7 15H4V9zm12-2v10c1.225-1.1 2-3.229 2-5s-.775-3.9-2-5z"></path>
+                    </svg>
+                    <svg class="volume-mute hidden" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: rgba(253, 248, 248, 1);">
+                    <path d="m21.707 20.293-2.023-2.023A9.566 9.566 0 0 0 21.999 12c0-4.091-2.472-7.453-5.999-9v2c2.387 1.386 3.999 4.047 3.999 7a8.113 8.113 0 0 1-1.672 4.913l-1.285-1.285C17.644 14.536 18 13.19 18 12c0-1.771-.775-3.9-2-5v7.586l-2-2V4a1 1 0 0 0-1.554-.832L7.727 6.313l-4.02-4.02-1.414 1.414 18 18 1.414-1.414zM12 5.868v4.718L9.169 7.755 12 5.868zM4 17h2.697l5.748 3.832a1.004 1.004 0 0 0 1.027.05A1 1 0 0 0 14 20v-1.879l-2-2v2.011l-4.445-2.964c-.025-.017-.056-.02-.082-.033a.986.986 0 0 0-.382-.116C7.059 15.016 7.032 15 7 15H4V9h.879L3.102 7.223A1.995 1.995 0 0 0 2 9v6c0 1.103.897 2 2 2z"></path>
+                    </svg>
+                  </button>
+                  <input type="range" id="volume-slider" min="0" max="1" step="any" value="1" class="h-1 rounded-none accent-white">
+                </div>
+                <div class="duration-container flex gap-1 items-center grow">
+                  <div class="current-time">0:00</div>
+                  /
+                  <div class="total-time"></div>
+                </div>
+              </div>
+             <div class="right-side flex justify-between gap-5 mr-5">
+              <button id="closed-caption-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(255, 255, 255, 1);transform: msFilter"><path d="M20 4H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm-9 6H8v4h3v2H8c-1.103 0-2-.897-2-2v-4c0-1.103.897-2 2-2h3v2zm7 0h-3v4h3v2h-3c-1.103 0-2-.897-2-2v-4c0-1.103.897-2 2-2h3v2z"></path></svg>
+              </button>
+              <button id="speed-btn" class="w-[50px]"> 1x</button>
+              <button id="miniPlayer-btn">
+                  <svg width="30px" height="30px" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="none" fill-rule="evenodd" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" transform="translate(3 4)">
+                      <path d="m2.5.5h10c1.1045695 0 2 .8954305 2 2v8c0 1.1045695-.8954305 2-2 2h-10c-1.1045695 0-2-.8954305-2-2v-8c0-1.1045695.8954305-2 2-2z"/>
+                      <path d="m9.5 6.5h2c.5522847 0 1 .44771525 1 1v2c0 .5522847-.4477153 1-1 1h-2c-.55228475 0-1-.4477153-1-1v-2c0-.55228475.44771525-1 1-1z" fill="#FFFFFF"/>
+                    </g>
+                  </svg>
+              </button>
+              <button id="theatre-btn">
+                  <svg class="theatre-disable" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: rgba(253, 248, 248, 1);"><path d="M20 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zM4 19V5h16l.001 14H4z"></path></svg>
+                  <svg class="theatre-enable" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: rgba(253, 248, 248, 1);"><path d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zm-1 16H5V5h14v14z"></path></svg>
+              </button>
+              <button id="fullScreen-btn">
+                    <svg class="fullscreen-enable" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: rgba(253, 248, 248, 1);transform: msFilter"><path d="M5 5h5V3H3v7h2zm5 14H5v-5H3v7h7zm11-5h-2v5h-5v2h7zm-2-4h2V3h-7v2h5z"></path></svg>
+                    <svg class="fullscreen-disable" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: rgba(253, 248, 248, 1);transform: msFilter"><path d="M10 4H8v4H4v2h6zM8 20h2v-6H4v2h4zm12-6h-6v6h2v-4h4zm0-6h-4V4h-2v6h6z"></path></svg>
+              </button>
+            </div>
+                
+            
+          </div>
+      </div>
+      <video class="w-full">
+          <source src="video/sintel-short.mp4" type="video/mp4">
+          <source src="video/sintel-short.webm" type="video/webm">
+          <track kind="captions" srclang="en" src>
+      </video>
+  </div>
+  <div class="icons-container flex flex-col gap-10">
+    <a href="https://github.com/KARUNANS2004/Custom-Video-Player"  target="_blank">
+      <svg class="bg-white rounded-full icon" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform:msFilter"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.026 2c-5.509 0-9.974 4.465-9.974 9.974 0 4.406 2.857 8.145 6.821 9.465.499.09.679-.217.679-.481 0-.237-.008-.865-.011-1.696-2.775.602-3.361-1.338-3.361-1.338-.452-1.152-1.107-1.459-1.107-1.459-.905-.619.069-.605.069-.605 1.002.07 1.527 1.028 1.527 1.028.89 1.524 2.336 1.084 2.902.829.091-.645.351-1.085.635-1.334-2.214-.251-4.542-1.107-4.542-4.93 0-1.087.389-1.979 1.024-2.675-.101-.253-.446-1.268.099-2.64 0 0 .837-.269 2.742 1.021a9.582 9.582 0 0 1 2.496-.336 9.554 9.554 0 0 1 2.496.336c1.906-1.291 2.742-1.021 2.742-1.021.545 1.372.203 2.387.099 2.64.64.696 1.024 1.587 1.024 2.675 0 3.833-2.33 4.675-4.552 4.922.355.308.675.916.675 1.846 0 1.334-.012 2.41-.012 2.737 0 .267.178.577.687.479C19.146 20.115 22 16.379 22 11.974 22 6.465 17.535 2 12.026 2z"></path></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/karuna-nidhan-singh07/" class="bg-white rounded-xl" target="_blank">
+      <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" style="fill: rgba(0, 119, 181, 1);transform: msFilter"><path d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM8.339 18.337H5.667v-8.59h2.672v8.59zM7.003 8.574a1.548 1.548 0 1 1 0-3.096 1.548 1.548 0 0 1 0 3.096zm11.335 9.763h-2.669V14.16c0-.996-.018-2.277-1.388-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248h-2.667v-8.59h2.56v1.174h.037c.355-.675 1.227-1.387 2.524-1.387 2.704 0 3.203 1.778 3.203 4.092v4.71z"></path></svg>
+    </a>
+  </div>
+    
+  <script src="vid.js"></script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXGY_rB9h7o4RuE3k9S32ef39gE_DILnU",
+      authDomain: "viplay-90f44.firebaseapp.com",
+      projectId: "viplay-90f44",
+      storageBucket: "viplay-90f44.appspot.com",
+      messagingSenderId: "55307661941",
+      appId: "1:55307661941:web:2921a8d084a10a20603e3c",
+      measurementId: "G-YK0GBQQKWT"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+</body>
+</html>
